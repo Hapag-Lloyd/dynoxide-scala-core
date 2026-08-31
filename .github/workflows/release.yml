@@ -1,0 +1,32 @@
+name: Release
+
+# Triggered when a draft released is "published" (not a draft anymore)
+on:
+  release:
+    types: [ published ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: sbt/setup-sbt@v1
+      - uses: coursier/cache-action@v8
+      - uses: olafurpg/setup-gpg@v3
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+          check-latest: true
+
+      - name: Publish package
+        run: sbt 'clean;+test;ci-release'
+        env:
+          # env vars standard for sbt-ci-release/sbt-sonatype
+          PGP_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.GPG_SIGNING_KEY }}
+          SONATYPE_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.OSSRH_USERNAME }}
