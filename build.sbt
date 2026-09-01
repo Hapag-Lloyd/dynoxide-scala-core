@@ -23,7 +23,7 @@ ThisBuild / versionScheme    := Some("early-semver")
 // the artifact `version` is managed by sbt-ci-release/sbt-dynver
 
 val scala212 = "2.12.21"
-val scala213 = "2.13.16"
+val scala213 = "2.13.18"
 val scala3   = "3.8.4"
 
 lazy val root = (project in file("."))
