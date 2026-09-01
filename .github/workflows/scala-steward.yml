@@ -21,3 +21,4 @@ jobs:
         uses: scala-steward-org/scala-steward-action@v2.96.0
         with:
           github-token: ${{ secrets.PAT_FOR_PR_AUTO_APPROVAL }}
+          author-email: 160709408+HapagLloydTechnicalUser@users.noreply.github.com
