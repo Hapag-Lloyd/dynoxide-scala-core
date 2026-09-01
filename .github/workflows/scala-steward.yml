@@ -15,16 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Scala Steward
     steps:
-      - name: Get organization app token
-        id: app-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
-        with:
-          app-id: ${{ vars.GET_TOKEN_APP_ID }}
-          private-key: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
-
       - uses: sbt/setup-sbt@v1
 
       - name: Scala Steward
         uses: scala-steward-org/scala-steward-action@v2.96.0
         with:
-          github-token: ${{ steps.app-token.outputs.token }}
+          github-token: ${{ secrets.PAT_FOR_PR_AUTO_APPROVAL }}
