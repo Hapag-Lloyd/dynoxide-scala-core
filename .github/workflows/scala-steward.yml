@@ -15,18 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Scala Steward
     steps:
-      - name: Check that the organization app credentials are available
-        env:
-          APP_ID: ${{ vars.GET_TOKEN_APP_ID }}
-          APP_KEY: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
-        run: |
-          missing=""
-          [ -z "$APP_ID" ] && missing="$missing GET_TOKEN_APP_ID(variable)"
-          [ -z "$APP_KEY" ] && missing="$missing GET_TOKEN_APP_PRIVATE_KEY(secret)"
-          if [ -n "$missing" ]; then
-            echo "::error title=Organization app credentials are not available::Not shared with this repository:$missing."
-            exit 1
-          fi
       - name: Get organization app token
         id: app-token
         uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2

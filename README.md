@@ -56,3 +56,16 @@ Run all tests:
 sbt clean test
 ```
 
+Code must be formatted with [scalafmt](https://scalameta.org/scalafmt/) before committing. Format
+the project with:
+
+```
+sbt 'scalafmtSbt; +scalafmtAll'
+```
+
+Check formatting (e.g. in CI) with:
+
+```
+sbt 'scalafmtSbtCheck; +scalafmtCheckAll'
+```
+
