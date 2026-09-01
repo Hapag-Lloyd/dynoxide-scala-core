@@ -20,7 +20,7 @@ ThisBuild / description      :=
     "Shared by sbt-dynoxide and mill-dynoxide."
 ThisBuild / versionScheme    := Some("early-semver")
 
-ThisBuild / version := "0.8.0-SNAPSHOT" // sbt-ci-release/sbt-dynver derives released versions from git tags
+// the artifact `version` is managed by sbt-ci-release/sbt-dynver
 
 val scala212 = "2.12.21"
 val scala213 = "2.13.16"
