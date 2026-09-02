@@ -1,0 +1,28 @@
+name: Approve and auto-merge Scala Steward PRs
+
+# yamllint disable-line rule:truthy
+on: pull_request_target
+
+jobs:
+  approve-and-merge:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'generate-app-token-hl[bot]'
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Approve PR
+        uses: hmarr/auto-approve-action@f0939ea97e9205ef24d872e76833fa908a770363 # v4.0.0
+        with:
+          review-message: "Auto approve Scala Steward PR (organization rule)"
+          github-token: ${{ secrets.PAT_FOR_PR_AUTO_APPROVAL }}
+
+      # Using a plain merge commit (not squash/rebase) preserves the original
+      # commit SHAs from Scala Steward, e.g. separate scalafmt-reformatting
+      # commits referenced by hash in .git-blame-ignore-revs
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.PAT_FOR_PR_AUTO_APPROVAL }}
+        run: |
+          gh pr merge --auto --merge "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}"
