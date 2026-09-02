@@ -6,6 +6,7 @@ on: pull_request_target
 jobs:
   approve-and-merge:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     if: github.event.pull_request.user.login == 'generate-app-token-hl[bot]'
     permissions:
       pull-requests: write
@@ -27,9 +28,17 @@ jobs:
       # Using a plain merge commit (not squash/rebase) preserves the original
       # commit SHAs from Scala Steward, e.g. separate scalafmt-reformatting
       # commits referenced by hash in .git-blame-ignore-revs
-      - name: Enable auto-merge
+      #
+      # NOTE: `gh pr merge --auto` only enables GitHub's deferred auto-merge
+      # queue, which does NOT seem to honor the App's Ruleset bypass
+      # permission when it eventually executes. Instead, wait for checks to
+      # finish and perform an immediate merge, which - like the "Bypass
+      # rules and merge" button in the UI - does honor bypass right away.
+      - name: Wait for checks and merge
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh pr merge --auto --merge "${{ github.event.pull_request.number }}" \
+          gh pr checks "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" --watch --fail-fast
+          gh pr merge --merge "${{ github.event.pull_request.number }}" \
             --repo "${{ github.repository }}"
