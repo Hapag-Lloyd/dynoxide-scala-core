@@ -39,6 +39,6 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh pr checks "${{ github.event.pull_request.number }}" \
-            --repo "${{ github.repository }}" --watch --fail-fast
+            --repo "${{ github.repository }}" --watch --fail-fast --required
           gh pr merge --merge "${{ github.event.pull_request.number }}" \
             --repo "${{ github.repository }}"
