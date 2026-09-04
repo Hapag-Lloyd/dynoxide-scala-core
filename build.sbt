@@ -31,7 +31,7 @@ lazy val root = (project in file("."))
     name                                   := "dynoxide-scala-core",
     scalaVersion                           := scala3,
     crossScalaVersions                     := Seq(scala3, scala213, scala212),
-    libraryDependencies += "org.scalameta" %% "munit"    % "1.3.5"  % Test,
+    libraryDependencies += "org.scalameta" %% "munit"    % "1.3.6"  % Test,
     libraryDependencies += "org.wiremock"   % "wiremock" % "3.13.2" % Test,
     testFrameworks += new TestFramework("munit.Framework"),
     // DynoxideServerSuite spawns a subprocess (re-entering this same JVM) that needs the full
